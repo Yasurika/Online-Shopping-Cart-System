@@ -1,0 +1,186 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Analytics & Reports - ShopEasy Admin</title>
+    <link rel="stylesheet" href="css/admin.css">
+    <link rel="stylesheet" href="css/admin-analytics.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body>
+<!-- Sidebar -->
+<div class="sidebar">
+    <div class="logo">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor">
+            <path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5" stroke-width="2"/>
+        </svg>
+        <h2>ShopEasy Admin</h2>
+    </div>
+
+    <nav class="nav-menu">
+        <a href="admin-dashboard.html" class="nav-item">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                <rect x="3" y="3" width="7" height="7" stroke-width="2"/>
+                <rect x="14" y="3" width="7" height="7" stroke-width="2"/>
+                <rect x="14" y="14" width="7" height="7" stroke-width="2"/>
+                <rect x="3" y="14" width="7" height="7" stroke-width="2"/>
+            </svg>
+            <span>Dashboard</span>
+        </a>
+
+        <a href="admin-products.html" class="nav-item">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                <path d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 11-4 0 2 2 0 014 0z" stroke-width="2"/>
+            </svg>
+            <span>Products</span>
+        </a>
+
+        <a href="admin-analytics.html" class="nav-item active">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                <path d="M3 3v18h18" stroke-width="2" stroke-linecap="round"/>
+                <path d="M18 17l-5-5-4 4-6-6" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+            <span>Analytics</span>
+        </a>
+
+        <a href="admin-orders.html" class="nav-item">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                <path d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2" stroke-width="2"/>
+            </svg>
+            <span>Orders</span>
+        </a>
+
+        <a href="#" class="nav-item" onclick="adminLogout()">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                <path d="M9 21H5a2 2 0 01-2-2V5a2 2 0 012-2h4M16 17l5-5-5-5M21 12H9" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+            <span>Logout</span>
+        </a>
+    </nav>
+</div>
+
+<!-- Main Content -->
+<div class="main-content">
+    <!-- Header -->
+    <header class="header">
+        <h1>Analytics & Reports</h1>
+        <div class="header-right">
+            <span class="admin-name" id="adminName">Admin</span>
+            <div class="admin-avatar">👤</div>
+        </div>
+    </header>
+
+    <!-- Report Navigation -->
+    <div class="report-nav">
+        <button class="report-tab active" onclick="showReport('sales')">Sales Report</button>
+        <button class="report-tab" onclick="showReport('inventory')">Inventory Report</button>
+        <button class="report-tab" onclick="showReport('category')">Category Analytics</button>
+        <button class="report-tab" onclick="showReport('lowstock')">Low Stock Alerts</button>
+    </div>
+
+    <!-- Date Filter -->
+    <div class="date-filter">
+        <label>Start Date:</label>
+        <input type="date" id="startDate" value="" onchange="updateReports()">
+        <label>End Date:</label>
+        <input type="date" id="endDate" value="" onchange="updateReports()">
+        <button class="btn-filter" onclick="updateReports()">Filter</button>
+        <button class="btn-export" onclick="exportToCSV()">Export CSV</button>
+    </div>
+
+    <!-- Sales Report Section -->
+    <div id="salesReport" class="report-section active">
+        <h2>Sales Report</h2>
+        <div class="report-summary">
+            <div class="summary-card">
+                <h4>Total Revenue</h4>
+                <p id="totalRevenue" class="summary-value">$0.00</p>
+            </div>
+            <div class="summary-card">
+                <h4>Total Orders</h4>
+                <p id="totalOrdersCount" class="summary-value">0</p>
+            </div>
+            <div class="summary-card">
+                <h4>Total Customers</h4>
+                <p id="totalCustomers" class="summary-value">0</p>
+            </div>
+            <div class="summary-card">
+                <h4>Avg Order Value</h4>
+                <p id="avgOrderValue" class="summary-value">$0.00</p>
+            </div>
+        </div>
+        <canvas id="salesChart" style="margin-top: 20px;"></canvas>
+        <div id="salesTable" class="report-table"></div>
+    </div>
+
+    <!-- Inventory Report Section -->
+    <div id="inventoryReport" class="report-section">
+        <h2>Inventory Status</h2>
+        <div class="inventory-stats">
+            <div class="stat-mini">
+                <span>Total Products:</span>
+                <strong id="inventoryTotalProducts">0</strong>
+            </div>
+            <div class="stat-mini">
+                <span>Total Value:</span>
+                <strong id="inventoryTotalValue">$0.00</strong>
+            </div>
+        </div>
+        <table class="data-table">
+            <thead>
+                <tr>
+                    <th>Product Name</th>
+                    <th>Category</th>
+                    <th>Stock</th>
+                    <th>Value</th>
+                    <th>Status</th>
+                </tr>
+            </thead>
+            <tbody id="inventoryTableBody"></tbody>
+        </table>
+    </div>
+
+    <!-- Category Analytics Section -->
+    <div id="categoryReport" class="report-section">
+        <h2>Category Performance</h2>
+        <canvas id="categoryChart"></canvas>
+        <table class="data-table">
+            <thead>
+                <tr>
+                    <th>Category</th>
+                    <th>Products</th>
+                    <th>Total Revenue</th>
+                    <th>Avg Price</th>
+                    <th>Stock Level</th>
+                </tr>
+            </thead>
+            <tbody id="categoryTableBody"></tbody>
+        </table>
+    </div>
+
+    <!-- Low Stock Alerts Section -->
+    <div id="lowstockReport" class="report-section">
+        <h2>Low Stock Alerts</h2>
+        <div class="alert-summary">
+            <p id="lowStockCount" class="alert-text">Loading...</p>
+        </div>
+        <table class="data-table alert-table">
+            <thead>
+                <tr>
+                    <th>⚠️ Product Name</th>
+                    <th>Category</th>
+                    <th>Current Stock</th>
+                    <th>Threshold</th>
+                    <th>Action</th>
+                </tr>
+            </thead>
+            <tbody id="lowstockTableBody"></tbody>
+        </table>
+    </div>
+</div>
+
+<script src="js/config.js"></script>
+<script src="js/admin-analytics.js"></script>
+</body>
+</html>

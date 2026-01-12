@@ -1,0 +1,203 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Checkout - ShopEasy</title>
+    <link rel="stylesheet" href="css/common.css">
+    <link rel="stylesheet" href="css/products.css">
+</head>
+<body>
+<!-- Navigation -->
+<nav class="navbar">
+    <div class="nav-container">
+        <div class="nav-logo">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                <path d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 11-4 0 2 2 0 014 0z" stroke-width="2"/>
+            </svg>
+            <span>ShopEasy</span>
+        </div>
+    </div>
+</nav>
+
+<!-- Checkout Section -->
+<section class="checkout-section">
+    <div class="container">
+        <h1 class="page-title">Checkout</h1>
+
+        <div class="checkout-content">
+            <form id="checkoutForm" class="checkout-form">
+                <div class="form-section">
+                    <h3>Shipping Address</h3>
+                    <div class="form-group">
+                        <label>Address</label>
+                        <textarea id="shippingAddress" rows="3" required></textarea>
+                    </div>
+                </div>
+
+                <div class="form-section">
+                    <h3>Payment Method</h3>
+                    <div class="payment-methods">
+                        <label class="payment-option">
+                            <input type="radio" name="payment" value="credit_card" checked>
+                            <span>Credit Card</span>
+                        </label>
+                        <label class="payment-option">
+                            <input type="radio" name="payment" value="debit_card">
+                            <span>Debit Card</span>
+                        </label>
+                        <label class="payment-option">
+                            <input type="radio" name="payment" value="cash_on_delivery">
+                            <span>Cash on Delivery</span>
+                        </label>
+                    </div>
+                </div>
+
+                <button type="submit" class="btn btn-primary">Place Order</button>
+            </form>
+
+            <div class="order-summary-checkout">
+                <h3>Order Summary</h3>
+                
+                <!-- Items List -->
+                <div id="checkoutItems" class="checkout-items-list"></div>
+                
+                <!-- Bill Breakdown -->
+                <div class="bill-breakdown">
+                    <div class="bill-row">
+                        <span>Subtotal:</span>
+                        <span id="subtotalAmount">$0.00</span>
+                    </div>
+                    <div class="bill-row">
+                        <span>Shipping:</span>
+                        <span id="shippingAmount">Free</span>
+                    </div>
+                    <div class="bill-row">
+                        <span>Tax (estimated):</span>
+                        <span id="taxAmount">$0.00</span>
+                    </div>
+                    <div class="bill-divider"></div>
+                    <div class="bill-row bill-total">
+                        <span>Total Amount:</span>
+                        <span id="checkoutTotal">$0.00</span>
+                    </div>
+                </div>
+                
+                <!-- Items Count -->
+                <div class="items-info">
+                    <p id="itemsCount">Items in order: 0</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<script src="js/config.js"></script>
+<script>
+    const user = JSON.parse(localStorage.getItem('user'));
+    if (!user) {
+        window.location.href = 'login.html';
+    }
+
+    // Load checkout data
+    const cart = JSON.parse(sessionStorage.getItem('checkoutCart')) || [];
+    const total = parseFloat(sessionStorage.getItem('checkoutTotal')) || 0;
+
+    document.getElementById('shippingAddress').value = user.address || '';
+    
+    // Calculate bill breakdown
+    const TAX_RATE = 0.08; // 8% tax
+    const SHIPPING_COST = 0; // Free shipping
+    
+    const subtotal = total;
+    const tax = subtotal * TAX_RATE;
+    const totalWithTax = subtotal + tax + SHIPPING_COST;
+    const itemCount = cart.reduce((sum, item) => sum + item.quantity, 0);
+
+    // Display bill breakdown
+    document.getElementById('subtotalAmount').textContent = `$${subtotal.toFixed(2)}`;
+    document.getElementById('shippingAmount').textContent = SHIPPING_COST === 0 ? 'Free' : `$${SHIPPING_COST.toFixed(2)}`;
+    document.getElementById('taxAmount').textContent = `$${tax.toFixed(2)}`;
+    document.getElementById('checkoutTotal').textContent = `$${totalWithTax.toFixed(2)}`;
+    document.getElementById('itemsCount').textContent = `Items in order: ${itemCount}`;
+
+    // Display items
+    const itemsContainer = document.getElementById('checkoutItems');
+    if (cart.length === 0) {
+        itemsContainer.innerHTML = '<p class="empty-items">No items in cart</p>';
+    } else {
+        cart.forEach(item => {
+            const itemTotal = item.price * item.quantity;
+            const div = document.createElement('div');
+            div.className = 'checkout-item';
+            div.innerHTML = `
+                <div class="item-name">${item.product.name}</div>
+                <div class="item-details">
+                    <span>$${item.price.toFixed(2)} × ${item.quantity}</span>
+                    <span class="item-total">$${itemTotal.toFixed(2)}</span>
+                </div>
+            `;
+            itemsContainer.appendChild(div);
+        });
+    }
+    
+    // Store final total in session for order creation
+    sessionStorage.setItem('checkoutFinalTotal', totalWithTax.toFixed(2));
+
+    document.getElementById('checkoutForm').addEventListener('submit', async (e) => {
+        e.preventDefault();
+
+        const shippingAddress = document.getElementById('shippingAddress').value;
+        const paymentMethod = document.querySelector('input[name="payment"]:checked').value;
+        const btn = e.target.querySelector('button[type="submit"]');
+        
+        // Disable button during submission
+        const originalText = btn.textContent;
+        btn.disabled = true;
+        btn.textContent = 'Processing...';
+
+        try {
+            console.log('[CHECKOUT] Placing order...');
+            console.log('[CHECKOUT] User ID:', user.id);
+            console.log('[CHECKOUT] Shipping Address:', shippingAddress);
+            console.log('[CHECKOUT] Payment Method:', paymentMethod);
+
+            const response = await fetch(`${API_BASE_URL}/api/orders/${user.id}`, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ shippingAddress, paymentMethod })
+            });
+
+            const data = await response.json();
+            console.log('[CHECKOUT] Response:', data);
+
+            if (response.ok && data.success) {
+                console.log('[CHECKOUT] Order placed successfully!');
+                console.log('[CHECKOUT] Order ID:', data.data?.id);
+                
+                // Clear session storage
+                sessionStorage.removeItem('checkoutCart');
+                sessionStorage.removeItem('checkoutTotal');
+                
+                // Show success message with order ID
+                const orderId = data.data?.id || 'unknown';
+                alert(`Order #${orderId} placed successfully!\nYour order is being processed.`);
+                
+                // Redirect to customer dashboard to see new order
+                window.location.href = `customer-dashboard.html?tab=orders`;
+            } else {
+                console.error('[CHECKOUT] Order failed:', data.message);
+                alert('Error placing order: ' + (data.message || 'Unknown error'));
+                btn.disabled = false;
+                btn.textContent = originalText;
+            }
+        } catch (error) {
+            console.error('[CHECKOUT] Exception during order placement:', error);
+            alert('Error placing order: ' + error.message);
+            btn.disabled = false;
+            btn.textContent = originalText;
+        }
+    });
+</script>
+</body>
+</html>

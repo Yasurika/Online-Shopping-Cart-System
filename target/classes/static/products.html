@@ -1,0 +1,267 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Products - ShopEasy</title>
+    <link rel="stylesheet" href="css/common.css">
+    <link rel="stylesheet" href="css/products.css">
+</head>
+<body>
+<!-- Navigation -->
+<nav class="navbar">
+    <div class="nav-container">
+        <div class="nav-logo">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                <path d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 11-4 0 2 2 0 014 0z" stroke-width="2"/>
+            </svg>
+            <span>ShopEasy</span>
+        </div>
+
+        <div class="nav-search">
+            <input type="text" id="searchInput" placeholder="Search products...">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                <circle cx="11" cy="11" r="8" stroke-width="2"/>
+                <path d="M21 21l-4.35-4.35" stroke-width="2" stroke-linecap="round"/>
+            </svg>
+        </div>
+
+        <div class="nav-actions">
+            <span class="user-name" id="userName">User</span>
+            <a href="customer-dashboard.html" class="nav-link" title="My Account">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" width="24" height="24">
+                    <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                    <circle cx="12" cy="7" r="4" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+            </a>
+            <a href="order-history.html" class="nav-link" title="Order History">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" width="24" height="24">
+                    <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                    <polyline points="9 22 9 12 15 12 15 22" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+            </a>
+            <div class="cart-icon" onclick="window.location.href='customer-dashboard.html?tab=cart'" title="Shopping Cart">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                    <path d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 11-4 0 2 2 0 014 0z" stroke-width="2"/>
+                </svg>
+                <span class="cart-badge" id="cartBadge">0</span>
+            </div>
+            <button class="btn-logout" onclick="logout()">Logout</button>
+        </div>
+    </div>
+</nav>
+
+<!-- Hero Section -->
+<section class="hero">
+    <div class="hero-content">
+        <h1>Discover Amazing Products</h1>
+        <p>Shop the latest trends at unbeatable prices</p>
+        <div class="hero-stats">
+            <div class="stat-item">
+                <h3 id="totalProducts">0</h3>
+                <p>Products</p>
+            </div>
+            <div class="stat-item">
+                <h3 id="totalCategories">11</h3>
+                <p>Categories</p>
+            </div>
+            <div class="stat-item">
+                <h3>24/7</h3>
+                <p>Support</p>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Categories Section -->
+<section class="categories-section">
+    <div class="container">
+        <h2 class="section-title">Shop by Category</h2>
+        <p class="section-subtitle">Browse through our wide range of product categories</p>
+
+        <div class="categories-grid">
+            <!-- Electronics -->
+            <div class="category-card" onclick="filterByCategory('Electronics')">
+                <div class="category-icon-large">💻</div>
+                <h3 class="category-title">Electronics</h3>
+                <p class="category-desc">Latest tech gadgets & devices</p>
+                <span class="category-count" id="count-Electronics">0 items</span>
+                <div class="category-overlay"></div>
+            </div>
+
+            <!-- Fashion -->
+            <div class="category-card" onclick="filterByCategory('Fashion')">
+                <div class="category-icon-large">👗</div>
+                <h3 class="category-title">Fashion</h3>
+                <p class="category-desc">Trendy clothing & accessories</p>
+                <span class="category-count" id="count-Fashion">0 items</span>
+                <div class="category-overlay"></div>
+            </div>
+
+            <!-- Sports -->
+            <div class="category-card" onclick="filterByCategory('Sports')">
+                <div class="category-icon-large">⚽</div>
+                <h3 class="category-title">Sports</h3>
+                <p class="category-desc">Fitness & sports equipment</p>
+                <span class="category-count" id="count-Sports">0 items</span>
+                <div class="category-overlay"></div>
+            </div>
+
+            <!-- Home -->
+            <div class="category-card" onclick="filterByCategory('Home')">
+                <div class="category-icon-large">🏠</div>
+                <h3 class="category-title">Home & Kitchen</h3>
+                <p class="category-desc">Home essentials & appliances</p>
+                <span class="category-count" id="count-Home">0 items</span>
+                <div class="category-overlay"></div>
+            </div>
+
+            <!-- Books -->
+            <div class="category-card" onclick="filterByCategory('Books')">
+                <div class="category-icon-large">📚</div>
+                <h3 class="category-title">Books</h3>
+                <p class="category-desc">Bestsellers & e-books</p>
+                <span class="category-count" id="count-Books">0 items</span>
+                <div class="category-overlay"></div>
+            </div>
+
+            <!-- Beauty -->
+            <div class="category-card" onclick="filterByCategory('Beauty')">
+                <div class="category-icon-large">💄</div>
+                <h3 class="category-title">Beauty</h3>
+                <p class="category-desc">Skincare & cosmetics</p>
+                <span class="category-count" id="count-Beauty">0 items</span>
+                <div class="category-overlay"></div>
+            </div>
+
+            <!-- Toys -->
+            <div class="category-card" onclick="filterByCategory('Toys')">
+                <div class="category-icon-large">🎮</div>
+                <h3 class="category-title">Toys & Games</h3>
+                <p class="category-desc">Fun for all ages</p>
+                <span class="category-count" id="count-Toys">0 items</span>
+                <div class="category-overlay"></div>
+            </div>
+
+            <!-- Office -->
+            <div class="category-card" onclick="filterByCategory('Office')">
+                <div class="category-icon-large">📝</div>
+                <h3 class="category-title">Office</h3>
+                <p class="category-desc">Stationery & supplies</p>
+                <span class="category-count" id="count-Office">0 items</span>
+                <div class="category-overlay"></div>
+            </div>
+
+            <!-- Automotive -->
+            <div class="category-card" onclick="filterByCategory('Automotive')">
+                <div class="category-icon-large">🚗</div>
+                <h3 class="category-title">Automotive</h3>
+                <p class="category-desc">Car accessories & tools</p>
+                <span class="category-count" id="count-Automotive">0 items</span>
+                <div class="category-overlay"></div>
+            </div>
+
+            <!-- Pets -->
+            <div class="category-card" onclick="filterByCategory('Pets')">
+                <div class="category-icon-large">🐾</div>
+                <h3 class="category-title">Pets</h3>
+                <p class="category-desc">Pet supplies & accessories</p>
+                <span class="category-count" id="count-Pets">0 items</span>
+                <div class="category-overlay"></div>
+            </div>
+
+            <!-- Garden -->
+            <div class="category-card" onclick="filterByCategory('Garden')">
+                <div class="category-icon-large">🌱</div>
+                <h3 class="category-title">Garden</h3>
+                <p class="category-desc">Outdoor & garden tools</p>
+                <span class="category-count" id="count-Garden">0 items</span>
+                <div class="category-overlay"></div>
+            </div>
+        </div>
+
+        <!-- View All Button -->
+        <div class="view-all-container">
+            <button class="btn-view-all" onclick="showAllProducts()">
+                <span>View All Products</span>
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                    <path d="M5 12h14M12 5l7 7-7 7" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+            </button>
+        </div>
+    </div>
+</section>
+
+<!-- Quick Filters -->
+<section class="quick-filters" id="quickFilters" style="display: none;">
+    <div class="container">
+        <div class="filter-header">
+            <h3 id="filterTitle">All Products</h3>
+            <button class="btn-clear-filter" onclick="showAllProducts()">Clear Filter</button>
+        </div>
+        <div class="filter-tags">
+            <button class="filter-tag active" onclick="showAllProducts()">All</button>
+            <button class="filter-tag" onclick="filterByCategory('Electronics')">💻 Electronics</button>
+            <button class="filter-tag" onclick="filterByCategory('Fashion')">👗 Fashion</button>
+            <button class="filter-tag" onclick="filterByCategory('Sports')">⚽ Sports</button>
+            <button class="filter-tag" onclick="filterByCategory('Home')">🏠 Home</button>
+            <button class="filter-tag" onclick="filterByCategory('Books')">📚 Books</button>
+            <button class="filter-tag" onclick="filterByCategory('Beauty')">💄 Beauty</button>
+            <button class="filter-tag" onclick="filterByCategory('Toys')">🎮 Toys</button>
+            <button class="filter-tag" onclick="filterByCategory('Office')">📝 Office</button>
+            <button class="filter-tag" onclick="filterByCategory('Automotive')">🚗 Automotive</button>
+            <button class="filter-tag" onclick="filterByCategory('Pets')">🐾 Pets</button>
+            <button class="filter-tag" onclick="filterByCategory('Garden')">🌱 Garden</button>
+        </div>
+    </div>
+</section>
+
+<!-- Products Section -->
+<section class="products-section" id="productsSection">
+    <div class="container">
+        <div class="products-header">
+            <h2 class="section-title">Featured Products</h2>
+            <div class="sort-filter">
+                <select id="sortSelect" onchange="sortProducts()">
+                    <option value="default">Default Sorting</option>
+                    <option value="price-low">Price: Low to High</option>
+                    <option value="price-high">Price: High to Low</option>
+                    <option value="name-az">Name: A-Z</option>
+                    <option value="name-za">Name: Z-A</option>
+                </select>
+            </div>
+        </div>
+        <div class="products-grid" id="productsGrid">
+            <!-- Products will be loaded here -->
+        </div>
+
+        <!-- Empty State -->
+        <div class="empty-state" id="emptyState" style="display: none;">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                <circle cx="11" cy="11" r="8" stroke-width="2"/>
+                <path d="M21 21l-4.35-4.35" stroke-width="2" stroke-linecap="round"/>
+            </svg>
+            <h3>No Products Found</h3>
+            <p>Try adjusting your search or filters</p>
+            <button class="btn btn-primary" onclick="showAllProducts()">View All Products</button>
+        </div>
+    </div>
+</section>
+
+<!-- Loading Spinner -->
+<div class="loading" id="loading">
+    <div class="spinner"></div>
+</div>
+
+<!-- Toast Notification -->
+<div class="toast" id="toast">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor">
+        <path d="M5 13l4 4L19 7" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+    </svg>
+    <span id="toastMessage">Product added to cart!</span>
+</div>
+
+<script src="js/config.js"></script>
+<script src="js/products.js"></script>
+</body>
+</html>

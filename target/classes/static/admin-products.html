@@ -1,0 +1,202 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Product Management - ShopEasy Admin</title>
+    <link rel="stylesheet" href="css/admin.css">
+    <link rel="stylesheet" href="css/admin-products.css">
+</head>
+<body>
+<!-- Sidebar -->
+<div class="sidebar">
+    <div class="logo">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor">
+            <path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5" stroke-width="2"/>
+        </svg>
+        <h2>ShopEasy Admin</h2>
+    </div>
+
+    <nav class="nav-menu">
+        <a href="admin-dashboard.html" class="nav-item">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                <rect x="3" y="3" width="7" height="7" stroke-width="2"/>
+                <rect x="14" y="3" width="7" height="7" stroke-width="2"/>
+                <rect x="14" y="14" width="7" height="7" stroke-width="2"/>
+                <rect x="3" y="14" width="7" height="7" stroke-width="2"/>
+            </svg>
+            <span>Dashboard</span>
+        </a>
+
+        <a href="admin-products.html" class="nav-item active">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                <path d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 11-4 0 2 2 0 014 0z" stroke-width="2"/>
+            </svg>
+            <span>Products</span>
+        </a>
+
+        <a href="admin-analytics.html" class="nav-item">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                <path d="M3 3v18h18" stroke-width="2" stroke-linecap="round"/>
+                <path d="M18 17l-5-5-4 4-6-6" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+            <span>Analytics</span>
+        </a>
+
+        <a href="admin-orders.html" class="nav-item">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                <path d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2" stroke-width="2"/>
+            </svg>
+            <span>Orders</span>
+        </a>
+
+        <a href="#" class="nav-item" onclick="adminLogout()">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                <path d="M9 21H5a2 2 0 01-2-2V5a2 2 0 012-2h4M16 17l5-5-5-5M21 12H9" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+            <span>Logout</span>
+        </a>
+    </nav>
+</div>
+
+<!-- Main Content -->
+<div class="main-content">
+    <!-- Header -->
+    <header class="header">
+        <h1>Product Management</h1>
+        <button class="btn-add" onclick="showAddProductModal()">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                <path d="M12 4v16m8-8H4" stroke-width="2" stroke-linecap="round"/>
+            </svg>
+            Add New Product
+        </button>
+    </header>
+
+    <!-- Filters -->
+    <div class="filters-bar">
+        <input type="text" id="searchProducts" placeholder="Search products..." class="search-input">
+        <select id="categoryFilter" class="filter-select" onchange="filterProducts()">
+            <option value="">All Categories</option>
+        </select>
+        <select id="stockFilter" class="filter-select" onchange="filterProducts()">
+            <option value="">All Stock Status</option>
+            <option value="in-stock">In Stock</option>
+            <option value="low-stock">Low Stock</option>
+            <option value="out-of-stock">Out of Stock</option>
+        </select>
+    </div>
+
+    <!-- Products Table -->
+    <div class="table-container">
+        <table class="products-table">
+            <thead>
+            <tr>
+                <th>ID</th>
+                <th>Image</th>
+                <th>Name</th>
+                <th>Category</th>
+                <th>Price</th>
+                <th>Stock</th>
+                <th>Status</th>
+                <th>Actions</th>
+            </tr>
+            </thead>
+            <tbody id="productsTableBody">
+            <!-- Products will be loaded here -->
+            </tbody>
+        </table>
+    </div>
+</div>
+
+<!-- Add/Edit Product Modal -->
+<div id="productModal" class="modal">
+    <div class="modal-content">
+        <div class="modal-header">
+            <h2 id="modalTitle">Add New Product</h2>
+            <span class="close" onclick="closeProductModal()">&times;</span>
+        </div>
+        <form id="productForm">
+            <input type="hidden" id="productId">
+
+            <div class="form-row">
+                <div class="form-group">
+                    <label for="productName">Product Name *</label>
+                    <input type="text" id="productName" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="productCategory">Category *</label>
+                    <select id="productCategory" required>
+                        <option value="">Select Category</option>
+                        <option value="Electronics">Electronics</option>
+                        <option value="Fashion">Fashion</option>
+                        <option value="Sports">Sports</option>
+                        <option value="Home">Home</option>
+                        <option value="Books">Books</option>
+                        <option value="Beauty">Beauty</option>
+                        <option value="Toys">Toys</option>
+                        <option value="Office">Office</option>
+                        <option value="Automotive">Automotive</option>
+                        <option value="Pets">Pets</option>
+                        <option value="Garden">Garden</option>
+                        <option value="Food & Beverages">Food & Beverages</option>
+                        <option value="Jewelry">Jewelry</option>
+                        <option value="Music">Music</option>
+                        <option value="Video Games">Video Games</option>
+                        <option value="Furniture">Furniture</option>
+                        <option value="Tools">Tools</option>
+                        <option value="Health">Health</option>
+                        <option value="Sports Equipment">Sports Equipment</option>
+                        <option value="Clothing">Clothing</option>
+                        <option value="Shoes">Shoes</option>
+                        <option value="Bags">Bags</option>
+                        <option value="Watches">Watches</option>
+                        <option value="Sunglasses">Sunglasses</option>
+                        <option value="Accessories">Accessories</option>
+                        <option value="Camping">Camping</option>
+                        <option value="Outdoor">Outdoor</option>
+                        <option value="Kitchen">Kitchen</option>
+                        <option value="Bathroom">Bathroom</option>
+                        <option value="Bedding">Bedding</option>
+                        <option value="Lighting">Lighting</option>
+                        <option value="Decor">Decor</option>
+                        <option value="Cleaning">Cleaning</option>
+                        <option value="Safety">Safety</option>
+                    </select>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label for="productDescription">Description</label>
+                <textarea id="productDescription" rows="3"></textarea>
+            </div>
+
+            <div class="form-row">
+                <div class="form-group">
+                    <label for="productPrice">Price ($) *</label>
+                    <input type="number" id="productPrice" step="0.01" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="productStock">Stock Quantity *</label>
+                    <input type="number" id="productStock" required>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label for="productImage">Image URL</label>
+                <input type="url" id="productImage" placeholder="https://...">
+            </div>
+
+            <div class="modal-footer">
+                <button type="button" class="btn-cancel" onclick="closeProductModal()">Cancel</button>
+                <button type="submit" class="btn-save">Save Product</button>
+            </div>
+        </form>
+    </div>
+</div>
+
+<script src="js/config.js"></script>
+<script src="js/admin-products.js"></script>
+</body>
+</html>
