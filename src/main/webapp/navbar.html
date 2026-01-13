@@ -1,0 +1,445 @@
+<nav class="navbar">
+    <div class="navbar-container">
+        <!-- Mobile Toggle -->
+        <button class="navbar-toggle" id="navbarToggle">
+            <span></span>
+            <span></span>
+            <span></span>
+        </button>
+
+        <!-- Navigation Menu -->
+        <ul class="nav-menu" id="navMenu">
+            <!-- Home -->
+            <li class="nav-item">
+                <a href="index.html" class="nav-link">
+                    <i class="fas fa-home"></i>
+                    <span>Home</span>
+                </a>
+            </li>
+
+            <!-- Shop Dropdown -->
+            <li class="nav-item dropdown">
+                <a href="#" class="nav-link dropdown-toggle">
+                    <i class="fas fa-shopping-bag"></i>
+                    <span>Shop</span>
+                    <i class="fas fa-chevron-down"></i>
+                </a>
+                <ul class="dropdown-menu">
+                    <li><a href="pages/shop.html?category=electronics">Electronics</a></li>
+                    <li><a href="pages/shop.html?category=fashion">Fashion</a></li>
+                    <li><a href="pages/shop.html?category=home">Home & Garden</a></li>
+                    <li><a href="pages/shop.html?category=books">Books</a></li>
+                    <li><a href="pages/shop.html?category=sports">Sports & Outdoors</a></li>
+                    <li class="divider"></li>
+                    <li><a href="pages/sale.html">Sale Items</a></li>
+                </ul>
+            </li>
+
+            <!-- Categories Dropdown -->
+            <li class="nav-item dropdown">
+                <a href="#" class="nav-link dropdown-toggle">
+                    <i class="fas fa-list"></i>
+                    <span>Categories</span>
+                    <i class="fas fa-chevron-down"></i>
+                </a>
+                <ul class="dropdown-menu">
+                    <li><a href="pages/category.html?id=1">Electronics</a></li>
+                    <li><a href="pages/category.html?id=2">Clothing</a></li>
+                    <li><a href="pages/category.html?id=3">Home Appliances</a></li>
+                    <li><a href="pages/category.html?id=4">Books & Media</a></li>
+                    <li><a href="pages/category.html?id=5">Sports Equipment</a></li>
+                </ul>
+            </li>
+
+            <!-- Deals -->
+            <li class="nav-item">
+                <a href="pages/deals.html" class="nav-link">
+                    <i class="fas fa-tag"></i>
+                    <span>Deals</span>
+                    <span class="badge">Hot</span>
+                </a>
+            </li>
+
+            <!-- About -->
+            <li class="nav-item">
+                <a href="pages/about.html" class="nav-link">
+                    <i class="fas fa-info-circle"></i>
+                    <span>About</span>
+                </a>
+            </li>
+
+            <!-- Contact -->
+            <li class="nav-item">
+                <a href="pages/contact.html" class="nav-link">
+                    <i class="fas fa-envelope"></i>
+                    <span>Contact</span>
+                </a>
+            </li>
+        </ul>
+
+        <!-- Right Side Menu Items -->
+        <ul class="nav-menu-right">
+            <!-- Search Button -->
+            <li class="nav-item">
+                <button class="nav-link search-toggle" id="searchToggle">
+                    <i class="fas fa-search"></i>
+                </button>
+            </li>
+
+            <!-- Language Selector -->
+            <li class="nav-item dropdown">
+                <a href="#" class="nav-link dropdown-toggle">
+                    <i class="fas fa-globe"></i>
+                    <span class="language-code">EN</span>
+                </a>
+                <ul class="dropdown-menu">
+                    <li><a href="#" data-lang="en">English</a></li>
+                    <li><a href="#" data-lang="es">Español</a></li>
+                    <li><a href="#" data-lang="fr">Français</a></li>
+                    <li><a href="#" data-lang="de">Deutsch</a></li>
+                </ul>
+            </li>
+
+            <!-- Currency Selector -->
+            <li class="nav-item dropdown">
+                <a href="#" class="nav-link dropdown-toggle">
+                    <i class="fas fa-dollar-sign"></i>
+                    <span class="currency-code">USD</span>
+                </a>
+                <ul class="dropdown-menu">
+                    <li><a href="#" data-currency="usd">USD ($)</a></li>
+                    <li><a href="#" data-currency="eur">EUR (€)</a></li>
+                    <li><a href="#" data-currency="gbp">GBP (£)</a></li>
+                    <li><a href="#" data-currency="inr">INR (₹)</a></li>
+                </ul>
+            </li>
+        </ul>
+    </div>
+
+    <!-- Search Bar (Hidden by default) -->
+    <div class="navbar-search" id="navbarSearch">
+        <form class="search-form" onsubmit="handleSearch(event)">
+            <input 
+                type="text" 
+                class="search-input" 
+                placeholder="Search products..." 
+                id="navbarSearchInput"
+            >
+            <button type="submit" class="search-submit">
+                <i class="fas fa-search"></i>
+            </button>
+        </form>
+    </div>
+</nav>
+
+<style>
+    .navbar {
+        background-color: white;
+        border-bottom: 1px solid #dee2e6;
+        position: relative;
+    }
+
+    .navbar-container {
+        max-width: 1200px;
+        margin: 0 auto;
+        padding: 0 20px;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        height: 60px;
+    }
+
+    .navbar-toggle {
+        display: none;
+        background: none;
+        border: none;
+        cursor: pointer;
+        flex-direction: column;
+        gap: 5px;
+        padding: 5px;
+    }
+
+    .navbar-toggle span {
+        width: 25px;
+        height: 3px;
+        background-color: #333;
+        transition: all 0.3s ease;
+        border-radius: 2px;
+    }
+
+    .navbar-toggle.active span:nth-child(1) {
+        transform: rotate(45deg) translate(8px, 8px);
+    }
+
+    .navbar-toggle.active span:nth-child(2) {
+        opacity: 0;
+    }
+
+    .navbar-toggle.active span:nth-child(3) {
+        transform: rotate(-45deg) translate(7px, -7px);
+    }
+
+    .nav-menu {
+        display: flex;
+        list-style: none;
+        gap: 0;
+        margin: 0;
+        padding: 0;
+        flex: 1;
+        align-items: center;
+    }
+
+    .nav-item {
+        position: relative;
+        height: 100%;
+        display: flex;
+        align-items: center;
+    }
+
+    .nav-link {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        padding: 20px 15px;
+        color: #333;
+        text-decoration: none;
+        transition: all 0.3s ease;
+        font-size: 14px;
+        font-weight: 500;
+        border-bottom: 3px solid transparent;
+        height: 100%;
+    }
+
+    .nav-link:hover {
+        color: #007bff;
+        border-bottom-color: #007bff;
+    }
+
+    .nav-link.active {
+        color: #007bff;
+        border-bottom-color: #007bff;
+    }
+
+    .nav-link .badge {
+        background-color: #dc3545;
+        color: white;
+        padding: 2px 8px;
+        border-radius: 12px;
+        font-size: 11px;
+        font-weight: 700;
+    }
+
+    /* Dropdown Menu */
+    .dropdown {
+        position: relative;
+    }
+
+    .dropdown-toggle::after {
+        content: '';
+        position: relative;
+    }
+
+    .dropdown-menu {
+        position: absolute;
+        top: 100%;
+        left: 0;
+        background: white;
+        border: 1px solid #dee2e6;
+        border-top: none;
+        list-style: none;
+        padding: 0;
+        margin: 0;
+        min-width: 200px;
+        box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+        display: none;
+        z-index: 1000;
+    }
+
+    .dropdown:hover .dropdown-menu {
+        display: block;
+    }
+
+    .dropdown-menu li {
+        padding: 0;
+    }
+
+    .dropdown-menu a {
+        display: block;
+        padding: 12px 20px;
+        color: #333;
+        text-decoration: none;
+        transition: all 0.3s ease;
+        font-size: 13px;
+    }
+
+    .dropdown-menu a:hover {
+        background-color: #f8f9fa;
+        color: #007bff;
+        padding-left: 30px;
+    }
+
+    .dropdown-menu .divider {
+        border-bottom: 1px solid #dee2e6;
+        margin: 5px 0;
+    }
+
+    /* Right Menu */
+    .nav-menu-right {
+        display: flex;
+        list-style: none;
+        gap: 10px;
+        margin: 0;
+        padding: 0;
+        margin-left: auto;
+        align-items: center;
+    }
+
+    /* Search */
+    .navbar-search {
+        display: none;
+        background-color: #f8f9fa;
+        padding: 15px 20px;
+        border-top: 1px solid #dee2e6;
+    }
+
+    .navbar-search.show {
+        display: block;
+    }
+
+    .search-form {
+        max-width: 1200px;
+        margin: 0 auto;
+        display: flex;
+        gap: 10px;
+    }
+
+    .search-input {
+        flex: 1;
+        padding: 10px 15px;
+        border: 1px solid #dee2e6;
+        border-radius: 5px;
+        font-size: 14px;
+    }
+
+    .search-submit {
+        padding: 10px 20px;
+        background-color: #007bff;
+        color: white;
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+    }
+
+    .search-submit:hover {
+        background-color: #0056b3;
+    }
+
+    /* Responsive */
+    @media (max-width: 768px) {
+        .navbar-toggle {
+            display: flex;
+        }
+
+        .nav-menu {
+            position: absolute;
+            top: 60px;
+            left: 0;
+            right: 0;
+            background: white;
+            flex-direction: column;
+            gap: 0;
+            max-height: 0;
+            overflow: hidden;
+            border-bottom: 1px solid #dee2e6;
+            transition: max-height 0.3s ease;
+            flex: none;
+        }
+
+        .nav-menu.show {
+            max-height: 500px;
+        }
+
+        .nav-item {
+            width: 100%;
+            height: auto;
+        }
+
+        .nav-link {
+            padding: 15px 20px;
+            border-bottom: 1px solid #f0f0f0;
+            border-bottom-color: transparent;
+        }
+
+        .dropdown-menu {
+            position: static;
+            display: none;
+            background: #f8f9fa;
+            border: none;
+            box-shadow: none;
+            padding-left: 20px;
+        }
+
+        .dropdown.open .dropdown-menu {
+            display: block;
+        }
+
+        .nav-menu-right {
+            margin-left: 0;
+            flex: 1;
+        }
+    }
+</style>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        setupNavbar();
+    });
+
+    function setupNavbar() {
+        const toggle = document.getElementById('navbarToggle');
+        const menu = document.getElementById('navMenu');
+        const searchToggle = document.getElementById('searchToggle');
+        const navbarSearch = document.getElementById('navbarSearch');
+        const dropdowns = document.querySelectorAll('.dropdown');
+
+        // Mobile toggle
+        toggle.addEventListener('click', function() {
+            toggle.classList.toggle('active');
+            menu.classList.toggle('show');
+            navbarSearch.classList.remove('show');
+        });
+
+        // Search toggle
+        searchToggle.addEventListener('click', function() {
+            navbarSearch.classList.toggle('show');
+            menu.classList.remove('show');
+            toggle.classList.remove('active');
+        });
+
+        // Dropdown menus (mobile)
+        dropdowns.forEach(dropdown => {
+            const toggle = dropdown.querySelector('.dropdown-toggle');
+            toggle.addEventListener('click', function(e) {
+                if (window.innerWidth <= 768) {
+                    e.preventDefault();
+                    dropdown.classList.toggle('open');
+                }
+            });
+        });
+
+        // Set active link
+        const currentPage = window.location.pathname;
+        document.querySelectorAll('.nav-link').forEach(link => {
+            if (link.getAttribute('href') === currentPage || 
+                link.getAttribute('href').includes(currentPage)) {
+                link.classList.add('active');
+            }
+        });
+    }
+
+    function handleSearch(e) {
+        e.preventDefault();
+        const query = document.getElementById('navbarSearchInput').value;
+        window.location.href = `pages/search.html?q=${encodeURIComponent(query)}`;
+    }
+</script>

@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Shopping Cart - Layout Template</title>
+    <link rel="stylesheet" href="css/global.css">
+    <link rel="stylesheet" href="css/layout.css">
+    <link rel="stylesheet" href="css/header.css">
+    <link rel="stylesheet" href="css/footer.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+    <!-- Navigation Bar -->
+    <nav id="navbar-container"></nav>
+
+    <!-- Header -->
+    <header id="header-container"></header>
+
+    <!-- Page Layout -->
+    <div class="page-layout">
+        <!-- Sidebar (Optional) -->
+        <aside class="sidebar" id="sidebar">
+            <div class="sidebar-section">
+                <h3>Filters</h3>
+                <div class="filter-group">
+                    <label>
+                        <input type="checkbox"> Price Range
+                    </label>
+                    <label>
+                        <input type="checkbox"> Category
+                    </label>
+                    <label>
+                        <input type="checkbox"> Rating
+                    </label>
+                </div>
+            </div>
+        </aside>
+
+        <!-- Main Content -->
+        <main class="main-content">
+            <div class="container">
+                <!-- Breadcrumb -->
+                <nav class="breadcrumb">
+                    <a href="index.html">Home</a>
+                    <span>/</span>
+                    <a href="#">Category</a>
+                    <span>/</span>
+                    <span>Current Page</span>
+                </nav>
+
+                <!-- Page Header -->
+                <div class="page-header">
+                    <h1>Page Title</h1>
+                    <p class="page-subtitle">Page description goes here</p>
+                </div>
+
+                <!-- Content Area -->
+                <section class="content-area">
+                    <div class="content-wrapper">
+                        <!-- Insert page-specific content here -->
+                        <article>
+                            <h2>Article Title</h2>
+                            <p>Article content goes here...</p>
+                        </article>
+                    </div>
+                </section>
+
+                <!-- Pagination (if needed) -->
+                <nav class="pagination" id="pagination">
+                    <a href="#" class="page-link prev">Previous</a>
+                    <a href="#" class="page-link active">1</a>
+                    <a href="#" class="page-link">2</a>
+                    <a href="#" class="page-link">3</a>
+                    <a href="#" class="page-link next">Next</a>
+                </nav>
+            </div>
+        </main>
+    </div>
+
+    <!-- Footer -->
+    <footer id="footer-container"></footer>
+
+    <!-- Scripts -->
+    <script src="js/utils.js"></script>
+    <script src="js/navigation.js"></script>
+    <script>
+        // Load components
+        document.addEventListener('DOMContentLoaded', function() {
+            loadNavbar();
+            loadHeader();
+            loadFooter();
+            setupLayoutEvents();
+        });
+
+        // Load navbar component
+        function loadNavbar() {
+            fetch('navbar.html')
+                .then(response => response.text())
+                .then(html => {
+                    document.getElementById('navbar-container').innerHTML = html;
+                })
+                .catch(error => console.error('Error loading navbar:', error));
+        }
+
+        // Load header component
+        function loadHeader() {
+            fetch('header.html')
+                .then(response => response.text())
+                .then(html => {
+                    document.getElementById('header-container').innerHTML = html;
+                })
+                .catch(error => console.error('Error loading header:', error));
+        }
+
+        // Load footer component
+        function loadFooter() {
+            fetch('footer.html')
+                .then(response => response.text())
+                .then(html => {
+                    document.getElementById('footer-container').innerHTML = html;
+                })
+                .catch(error => console.error('Error loading footer:', error));
+        }
+
+        // Setup layout-specific events
+        function setupLayoutEvents() {
+            // Sidebar toggle for mobile
+            const sidebar = document.getElementById('sidebar');
+            if (sidebar && window.innerWidth < 768) {
+                sidebar.classList.add('collapsed');
+            }
+
+            // Pagination links
+            const paginationLinks = document.querySelectorAll('.pagination .page-link');
+            paginationLinks.forEach(link => {
+                link.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    // Handle pagination
+                    if (this.classList.contains('active')) return;
+                    
+                    paginationLinks.forEach(l => l.classList.remove('active'));
+                    this.classList.add('active');
+                });
+            });
+        }
+
+        // Toggle sidebar on mobile
+        function toggleSidebar() {
+            const sidebar = document.getElementById('sidebar');
+            if (sidebar) {
+                sidebar.classList.toggle('collapsed');
+            }
+        }
+
+        // Responsive sidebar handling
+        window.addEventListener('resize', function() {
+            const sidebar = document.getElementById('sidebar');
+            if (window.innerWidth >= 768) {
+                sidebar.classList.remove('collapsed');
+            }
+        });
+    </script>
+</body>
+</html>

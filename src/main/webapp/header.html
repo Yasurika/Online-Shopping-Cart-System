@@ -1,0 +1,389 @@
+<header class="header">
+    <div class="header-container">
+        <!-- Logo Section -->
+        <div class="header-logo">
+            <a href="index.html" class="logo-link">
+                <i class="fas fa-shopping-cart"></i>
+                <span class="logo-text">Shopping Cart</span>
+            </a>
+        </div>
+
+        <!-- Search Bar -->
+        <div class="header-search">
+            <form class="search-form" id="searchForm">
+                <div class="search-input-group">
+                    <input 
+                        type="text" 
+                        class="search-input" 
+                        placeholder="Search products..." 
+                        id="searchInput"
+                        autocomplete="off"
+                    >
+                    <button type="submit" class="search-btn">
+                        <i class="fas fa-search"></i>
+                    </button>
+                </div>
+                <div class="search-suggestions" id="searchSuggestions"></div>
+            </form>
+        </div>
+
+        <!-- Header Actions -->
+        <div class="header-actions">
+            <!-- User Account -->
+            <div class="header-action-item account-dropdown">
+                <button class="header-action-btn" id="accountBtn">
+                    <i class="fas fa-user"></i>
+                    <span class="label">Account</span>
+                    <i class="fas fa-chevron-down"></i>
+                </button>
+                <div class="dropdown-menu" id="accountMenu">
+                    <a href="pages/user/profile.html" class="dropdown-item">
+                        <i class="fas fa-user-circle"></i> My Profile
+                    </a>
+                    <a href="pages/user/my-orders.html" class="dropdown-item">
+                        <i class="fas fa-shopping-bag"></i> My Orders
+                    </a>
+                    <a href="pages/user/addresses.html" class="dropdown-item">
+                        <i class="fas fa-map-marker-alt"></i> Addresses
+                    </a>
+                    <a href="pages/user/settings.html" class="dropdown-item">
+                        <i class="fas fa-cog"></i> Settings
+                    </a>
+                    <hr>
+                    <a href="#" class="dropdown-item" onclick="logout()">
+                        <i class="fas fa-sign-out-alt"></i> Logout
+                    </a>
+                </div>
+            </div>
+
+            <!-- Wishlist -->
+            <div class="header-action-item">
+                <a href="pages/user/wishlist.html" class="header-action-btn">
+                    <i class="fas fa-heart"></i>
+                    <span class="label">Wishlist</span>
+                    <span class="badge" id="wishlistCount">0</span>
+                </a>
+            </div>
+
+            <!-- Shopping Cart -->
+            <div class="header-action-item cart-dropdown">
+                <button class="header-action-btn" id="cartBtn">
+                    <i class="fas fa-shopping-cart"></i>
+                    <span class="label">Cart</span>
+                    <span class="badge" id="cartCount">0</span>
+                    <i class="fas fa-chevron-down"></i>
+                </button>
+                <div class="dropdown-menu cart-menu" id="cartMenu">
+                    <div class="cart-items" id="cartItems">
+                        <p class="empty-message">Your cart is empty</p>
+                    </div>
+                    <div class="cart-footer">
+                        <div class="cart-total">
+                            <span>Total:</span>
+                            <span id="cartTotal">$0.00</span>
+                        </div>
+                        <a href="pages/checkout.html" class="btn btn-primary">Checkout</a>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Notifications -->
+            <div class="header-action-item">
+                <button class="header-action-btn" id="notificationsBtn">
+                    <i class="fas fa-bell"></i>
+                    <span class="label">Notifications</span>
+                    <span class="badge notification-badge" id="notificationCount">0</span>
+                </button>
+            </div>
+
+            <!-- Admin Link (if user is admin) -->
+            <div class="header-action-item admin-link" id="adminLink" style="display: none;">
+                <a href="/admin-dashboard.html" class="header-action-btn">
+                    <i class="fas fa-cogs"></i>
+                    <span class="label">Admin</span>
+                </a>
+            </div>
+        </div>
+    </div>
+
+    <!-- Info Bar -->
+    <div class="header-info-bar">
+        <div class="info-items">
+            <div class="info-item">
+                <i class="fas fa-truck"></i>
+                <span>Free Shipping on orders over $50</span>
+            </div>
+            <div class="info-item">
+                <i class="fas fa-undo"></i>
+                <span>Easy Returns within 30 days</span>
+            </div>
+            <div class="info-item">
+                <i class="fas fa-shield-alt"></i>
+                <span>Secure Checkout</span>
+            </div>
+        </div>
+    </div>
+</header>
+
+<style>
+    .header {
+        background-color: white;
+        border-bottom: 1px solid #dee2e6;
+        position: sticky;
+        top: 0;
+        z-index: 99;
+        box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+    }
+
+    .header-container {
+        max-width: 1200px;
+        margin: 0 auto;
+        padding: 15px 20px;
+        display: flex;
+        align-items: center;
+        gap: 30px;
+    }
+
+    .header-logo {
+        flex-shrink: 0;
+    }
+
+    .logo-link {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        text-decoration: none;
+        color: #007bff;
+        font-weight: 700;
+        font-size: 18px;
+    }
+
+    .logo-link:hover {
+        color: #0056b3;
+    }
+
+    .header-search {
+        flex: 1;
+        min-width: 300px;
+    }
+
+    .search-form {
+        position: relative;
+    }
+
+    .search-input-group {
+        display: flex;
+        gap: 5px;
+    }
+
+    .search-input {
+        flex: 1;
+        padding: 10px 15px;
+        border: 1px solid #dee2e6;
+        border-radius: 5px;
+        font-size: 14px;
+    }
+
+    .search-input:focus {
+        outline: none;
+        border-color: #007bff;
+        box-shadow: 0 0 0 3px rgba(0,123,255,0.25);
+    }
+
+    .search-btn {
+        padding: 10px 15px;
+        background: #007bff;
+        color: white;
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+    }
+
+    .search-btn:hover {
+        background: #0056b3;
+    }
+
+    .header-actions {
+        display: flex;
+        gap: 20px;
+        align-items: center;
+    }
+
+    .header-action-item {
+        position: relative;
+    }
+
+    .header-action-btn {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        background: none;
+        border: none;
+        cursor: pointer;
+        color: #333;
+        font-size: 14px;
+        position: relative;
+        transition: color 0.3s ease;
+    }
+
+    .header-action-btn:hover {
+        color: #007bff;
+    }
+
+    .header-action-btn .label {
+        display: none;
+    }
+
+    .badge {
+        position: absolute;
+        top: -8px;
+        right: -12px;
+        background: #dc3545;
+        color: white;
+        border-radius: 50%;
+        width: 20px;
+        height: 20px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 12px;
+        font-weight: 700;
+    }
+
+    .dropdown-menu {
+        position: absolute;
+        top: 100%;
+        right: 0;
+        background: white;
+        border: 1px solid #dee2e6;
+        border-radius: 5px;
+        min-width: 200px;
+        box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+        z-index: 100;
+        display: none;
+        margin-top: 5px;
+    }
+
+    .dropdown-menu.show {
+        display: block;
+    }
+
+    .dropdown-item {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        padding: 12px 15px;
+        color: #333;
+        text-decoration: none;
+        transition: background-color 0.3s ease;
+        border-bottom: 1px solid #f0f0f0;
+    }
+
+    .dropdown-item:last-child {
+        border-bottom: none;
+    }
+
+    .dropdown-item:hover {
+        background-color: #f8f9fa;
+        color: #007bff;
+    }
+
+    .header-info-bar {
+        background-color: #f8f9fa;
+        border-top: 1px solid #dee2e6;
+        padding: 10px 20px;
+    }
+
+    .info-items {
+        max-width: 1200px;
+        margin: 0 auto;
+        display: flex;
+        gap: 30px;
+        justify-content: center;
+        flex-wrap: wrap;
+    }
+
+    .info-item {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        font-size: 12px;
+        color: #666;
+    }
+
+    .info-item i {
+        color: #007bff;
+    }
+
+    /* Responsive */
+    @media (max-width: 768px) {
+        .header-container {
+            flex-direction: column;
+            gap: 15px;
+            padding: 10px 15px;
+        }
+
+        .header-search {
+            width: 100%;
+            min-width: auto;
+        }
+
+        .header-action-btn .label {
+            display: none;
+        }
+
+        .info-items {
+            gap: 15px;
+        }
+
+        .info-item {
+            font-size: 11px;
+        }
+    }
+</style>
+
+<script>
+    // Dropdown functionality
+    document.addEventListener('DOMContentLoaded', function() {
+        setupDropdowns();
+        updateCartCount();
+    });
+
+    function setupDropdowns() {
+        const accountBtn = document.getElementById('accountBtn');
+        const accountMenu = document.getElementById('accountMenu');
+        const cartBtn = document.getElementById('cartBtn');
+        const cartMenu = document.getElementById('cartMenu');
+
+        // Account dropdown
+        accountBtn.addEventListener('click', function(e) {
+            e.stopPropagation();
+            accountMenu.classList.toggle('show');
+            cartMenu.classList.remove('show');
+        });
+
+        // Cart dropdown
+        cartBtn.addEventListener('click', function(e) {
+            e.stopPropagation();
+            cartMenu.classList.toggle('show');
+            accountMenu.classList.remove('show');
+        });
+
+        // Close dropdowns when clicking outside
+        document.addEventListener('click', function() {
+            accountMenu.classList.remove('show');
+            cartMenu.classList.remove('show');
+        });
+    }
+
+    function updateCartCount() {
+        const cart = JSON.parse(localStorage.getItem('cart')) || [];
+        const cartCount = cart.reduce((sum, item) => sum + (item.quantity || 1), 0);
+        document.getElementById('cartCount').textContent = cartCount;
+    }
+
+    function logout() {
+        localStorage.removeItem('userToken');
+        window.location.href = 'index.html';
+    }
+</script>
